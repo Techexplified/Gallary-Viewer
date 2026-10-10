@@ -106,20 +106,23 @@
     availableLabels = {};
 
     (cards || []).forEach(c => {
-      // Determine primary label and all card labels
-      let primaryLabel = 'General';
-      let primaryColor = LABEL_COLORS.default;
+      // Determine primary label and all card labels (only if card actually has labels)
+      let primaryLabel = null;
+      let primaryColor = null;
       const cardLabelsList = [];
 
       if (c.labels && c.labels.length > 0) {
         const lb = c.labels[0];
-        primaryLabel = lb.name && lb.name.trim().length > 0 ? lb.name : (lb.color ? capitalize(lb.color) : 'Label');
+        primaryLabel = lb.name && lb.name.trim().length > 0 ? lb.name.trim() : (lb.color ? capitalize(lb.color) : 'Label');
         primaryColor = LABEL_COLORS[lb.color] || LABEL_COLORS.default;
         
         c.labels.forEach(l => {
-          const name = l.name && l.name.trim().length > 0 ? l.name : (l.color ? capitalize(l.color) : 'Label');
-          availableLabels[name] = { c: LABEL_COLORS[l.color] || LABEL_COLORS.default };
-          cardLabelsList.push(name);
+          const name = l.name && l.name.trim().length > 0 ? l.name.trim() : (l.color ? capitalize(l.color) : 'Label');
+          const color = LABEL_COLORS[l.color] || LABEL_COLORS.default;
+          availableLabels[name] = { c: color };
+          if (!cardLabelsList.includes(name)) {
+            cardLabelsList.push(name);
+          }
         });
       }
 
@@ -137,7 +140,7 @@
             listId: c.idList,
             listName: listMap[c.idList] || 'List',
             l: primaryLabel,
-            labels: cardLabelsList.length > 0 ? cardLabelsList : [primaryLabel],
+            labels: cardLabelsList,
             color: primaryColor,
             d: days,
             date: att.date || c.dateLastActivity
@@ -154,7 +157,7 @@
           listId: c.idList,
           listName: listMap[c.idList] || 'List',
           l: primaryLabel,
-          labels: cardLabelsList.length > 0 ? cardLabelsList : [primaryLabel],
+          labels: cardLabelsList,
           color: primaryColor,
           d: days,
           date: c.dateLastActivity
@@ -195,23 +198,23 @@
     const sel = $('listSelect');
     sel.innerHTML = html;
     sel.value = state.list;
+    if (sel.value !== state.list) {
+      state.list = 'all';
+      sel.value = 'all';
+    }
   }
 
   function populateLabelDropdown() {
     const labelCounts = {};
+    let unlabeledCount = 0;
+
     allBoardItems.forEach(it => {
       if (it.labels && it.labels.length > 0) {
         it.labels.forEach(lb => {
           labelCounts[lb] = (labelCounts[lb] || 0) + 1;
-          if (!availableLabels[lb]) {
-            availableLabels[lb] = { c: it.color || LABEL_COLORS.default };
-          }
         });
-      } else if (it.l) {
-        labelCounts[it.l] = (labelCounts[it.l] || 0) + 1;
-        if (!availableLabels[it.l]) {
-          availableLabels[it.l] = { c: it.color || LABEL_COLORS.default };
-        }
+      } else {
+        unlabeledCount++;
       }
     });
 
@@ -220,16 +223,29 @@
       const cnt = labelCounts[k] || 0;
       html += `<option value="${esc(k)}" ${state.label === k ? 'selected' : ''}>${esc(k)} (${cnt})</option>`;
     });
+
+    if (unlabeledCount > 0) {
+      html += `<option value="__none__" ${state.label === '__none__' ? 'selected' : ''}>No label (${unlabeledCount})</option>`;
+    }
+
     const sel = $('labelSelect');
     sel.innerHTML = html;
     sel.value = state.label;
+    if (sel.value !== state.label) {
+      state.label = 'all';
+      sel.value = 'all';
+    }
   }
 
   function match(it) {
     if (state.list !== 'all' && it.listId !== state.list) return false;
     if (state.label && state.label !== 'all') {
-      const hasLabel = (it.labels && it.labels.includes(state.label)) || it.l === state.label;
-      if (!hasLabel) return false;
+      if (state.label === '__none__') {
+        if (it.labels && it.labels.length > 0) return false;
+      } else {
+        const hasLabel = (it.labels && it.labels.includes(state.label)) || it.l === state.label;
+        if (!hasLabel) return false;
+      }
     }
     if (state.date === 'today' && it.d > 0) return false;
     if (state.date === 'week' && it.d > 7) return false;
@@ -277,16 +293,23 @@
 
     let html = `<div class="grid" id="grid" data-title="${state.title}" data-reveal="${state.reveal}" style="--col:${state.col}px;--gx:${state.gx}px;--gy:${state.gy}px">`;
     visibleItems.forEach((it, i) => {
-      const dotColor = (availableLabels[it.l] && availableLabels[it.l].c) || it.color || '#8d98b1';
+      let tagHtml = '';
+      if (it.l) {
+        const dotColor = (availableLabels[it.l] && availableLabels[it.l].c) || it.color || '#8d98b1';
+        const extraBadge = (it.labels && it.labels.length > 1) ? ` <span style="opacity:0.75;font-weight:500;margin-left:2px;">+${it.labels.length - 1}</span>` : '';
+        tagHtml = `
+          <span class="tag">
+            <span class="dot" style="--c:${dotColor}"></span>${esc(it.l)}${extraBadge}
+          </span>`;
+      }
+
       html += `
         <button class="tile" data-i="${i}" aria-label="Preview ${esc(it.f)}, on card ${esc(it.card)}">
           <span class="ph">
             <img src="${it.url}" alt="${esc(it.f)}" loading="lazy" />
           </span>
           <span class="over">
-            <span class="tag">
-              <span class="dot" style="--c:${dotColor}"></span>${esc(it.l)}
-            </span>
+            ${tagHtml}
             <span class="cap">
               <strong>${esc(it.card)}</strong>
               <span>${esc(it.f)} · ${formatTimeAgo(it.d)}</span>
@@ -333,7 +356,12 @@
     const it = visibleItems[i];
     $('lbPic').innerHTML = `<img class="big" src="${it.url}" alt="${esc(it.f)}" />`;
     $('lbTitle').textContent = it.card;
-    $('lbMeta').textContent = `${it.f} · ${it.l} · ${formatTimeAgo(it.d)}`;
+    const metaParts = [it.f];
+    if (it.labels && it.labels.length > 0) {
+      metaParts.push(it.labels.join(', '));
+    }
+    metaParts.push(formatTimeAgo(it.d));
+    $('lbMeta').textContent = metaParts.join(' · ');
     
     $('lb').classList.add('open');
     $('lbClose').focus();

@@ -458,6 +458,7 @@ button {
 .cap {
   display: grid;
   gap: 1px;
+  margin-top: auto;
 }
 
 .cap strong {
