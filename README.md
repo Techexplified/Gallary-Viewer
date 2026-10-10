@@ -1,6 +1,6 @@
-# 🖼️ Trello Gallery Viewer Power-Up
+# 🖼️ Trello Grid Image Views Power-Up
 
-A modern, responsive, and feature-packed **Gallery Viewer Power-Up** for Trello boards and cards.
+A modern, responsive, and feature-packed **Grid Image Views Power-Up** for Trello boards and cards.
 
 ---
 

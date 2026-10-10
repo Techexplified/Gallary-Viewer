@@ -28,7 +28,7 @@ t.render(function () {
 
 btnAuthorize.addEventListener('click', function () {
   // Construct Trello OAuth 1.0 token URL
-  const authUrl = `https://trello.com/1/authorize?expiration=never&name=Gallery+Viewer&scope=read&response_type=token&key=${TRELLO_APP_KEY}&return_url=${encodeURIComponent(window.location.origin + '/views/auth-success.html')}`;
+  const authUrl = `https://trello.com/1/authorize?expiration=never&name=Grid+Image+Views&scope=read&response_type=token&key=${TRELLO_APP_KEY}&return_url=${encodeURIComponent(window.location.origin + '/views/auth-success.html')}`;
 
   return t.authorize(authUrl, {
     height: 680,

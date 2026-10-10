@@ -8,10 +8,10 @@ window.TrelloPowerUp.initialize({
     return [
       {
         icon: ICON_URL,
-        text: 'Gallery Viewer',
+        text: 'Grid Image Views',
         callback: function (t) {
           return t.modal({
-            title: 'Image Gallery',
+            title: 'Grid Image Views',
             url: './views/gallery-modal.html',
             accentColor: '#1d2125',
             fullscreen: true,
@@ -34,7 +34,7 @@ window.TrelloPowerUp.initialize({
     return [
       {
         icon: ICON_URL,
-        text: 'Board Gallery',
+        text: 'Grid Image Views',
         callback: function (t) {
           return t.modal({
             title: 'Board Media Gallery',
@@ -75,12 +75,12 @@ window.TrelloPowerUp.initialize({
 
         return [
           {
-            title: 'Gallery Images',
+            title: 'Grid Image Views',
             text: `${imageCount} image${imageCount > 1 ? 's' : ''}`,
             icon: ICON_URL,
             callback: function (t) {
               return t.modal({
-                title: 'Image Gallery',
+                title: 'Grid Image Views',
                 url: './views/gallery-modal.html',
                 accentColor: '#1d2125',
                 fullscreen: true
@@ -94,7 +94,7 @@ window.TrelloPowerUp.initialize({
   // 5. Card Back Section (embedded thumbnail carousel/grid inside the card)
   'card-back-section': function (t, options) {
     return {
-      title: 'Gallery Preview',
+      title: 'Grid Image Views',
       icon: ICON_URL,
       content: {
         type: 'iframe',
@@ -107,7 +107,7 @@ window.TrelloPowerUp.initialize({
   // 6. Power-Up Settings
   'show-settings': function (t, options) {
     return t.popup({
-      title: 'Gallery Viewer Settings',
+      title: 'Grid Image Views Settings',
       url: './views/settings.html',
       height: 280
     });
@@ -126,7 +126,7 @@ window.TrelloPowerUp.initialize({
   // 8. Show Authorization Modal / Popup
   'show-authorization': function (t, options) {
     return t.popup({
-      title: 'Authorize Gallery Viewer',
+      title: 'Authorize Grid Image Views',
       url: './views/auth.html',
       height: 200
     });

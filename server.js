@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`====================================================`);
-  console.log(` Gallery Viewer Trello Power-Up Server Running!`);
+  console.log(` Grid Image Views Trello Power-Up Server Running!`);
   console.log(` Local URL: http://localhost:${PORT}`);
   console.log(` Connector: http://localhost:${PORT}/index.html`);
   console.log(` Note: For Trello Power-Up testing, use an HTTPS tunnel`);
