@@ -62,6 +62,8 @@
     return days + ' days ago';
   }
 
+  let isInitialized = false;
+
   // Trello Power-Up Render
   t.render(function () {
     return Promise.all([
@@ -70,18 +72,16 @@
       t.cards('id', 'name', 'idList', 'labels', 'attachments', 'badges', 'cover', 'dateLastActivity'),
       t.get('member', 'private', 'galleryDisplaySettings')
     ]).then(function ([board, lists, cards, savedSettings]) {
-      // Ensure filter state always defaults to show all images when opened
-      state.date = 'all';
-      state.list = 'all';
-      state.label = 'all';
-      state.q = '';
-
-      if (savedSettings) {
-        if (typeof savedSettings.col === 'number') state.col = savedSettings.col;
-        if (typeof savedSettings.gx === 'number') state.gx = savedSettings.gx;
-        if (typeof savedSettings.gy === 'number') state.gy = savedSettings.gy;
-        if (savedSettings.title) state.title = savedSettings.title;
-        if (savedSettings.reveal) state.reveal = savedSettings.reveal;
+      if (!isInitialized) {
+        if (savedSettings) {
+          if (typeof savedSettings.col === 'number') state.col = savedSettings.col;
+          if (typeof savedSettings.gx === 'number') state.gx = savedSettings.gx;
+          if (typeof savedSettings.gy === 'number') state.gy = savedSettings.gy;
+          if (savedSettings.title) state.title = savedSettings.title;
+          if (savedSettings.reveal) state.reveal = savedSettings.reveal;
+        }
+        syncSettings();
+        isInitialized = true;
       }
 
       if (board && board.name) {
@@ -92,7 +92,6 @@
       processTrelloData(lists, cards);
       populateListDropdown();
       populateLabelDropdown();
-      syncSettings();
       render();
     }).catch(function () {
       // Fail gracefully if board data cannot be fetched

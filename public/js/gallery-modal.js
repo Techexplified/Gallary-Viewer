@@ -55,7 +55,8 @@ function initGallery() {
 
   renderThumbnails();
   renderGridView();
-  showImage(0);
+  const targetIndex = (currentIndex >= 0 && currentIndex < images.length) ? currentIndex : 0;
+  showImage(targetIndex);
 }
 
 function showImage(index) {
