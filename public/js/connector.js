@@ -8,10 +8,10 @@ window.TrelloPowerUp.initialize({
     return [
       {
         icon: ICON_URL,
-        text: 'Grid Image Views',
+        text: 'Images Grid Views',
         callback: function (t) {
           return t.modal({
-            title: 'Grid Image Views',
+            title: 'Images Grid Views',
             url: './views/gallery-modal.html',
             accentColor: '#1d2125',
             fullscreen: true,
@@ -34,7 +34,7 @@ window.TrelloPowerUp.initialize({
     return [
       {
         icon: ICON_URL,
-        text: 'Grid Image Views',
+        text: 'Images Grid Views',
         callback: function (t) {
           return t.modal({
             title: 'Board Media Gallery',
@@ -75,12 +75,12 @@ window.TrelloPowerUp.initialize({
 
         return [
           {
-            title: 'Grid Image Views',
+            title: 'Images Grid Views',
             text: `${imageCount} image${imageCount > 1 ? 's' : ''}`,
             icon: ICON_URL,
             callback: function (t) {
               return t.modal({
-                title: 'Grid Image Views',
+                title: 'Images Grid Views',
                 url: './views/gallery-modal.html',
                 accentColor: '#1d2125',
                 fullscreen: true
@@ -94,7 +94,7 @@ window.TrelloPowerUp.initialize({
   // 5. Card Back Section (embedded thumbnail carousel/grid inside the card)
   'card-back-section': function (t, options) {
     return {
-      title: 'Grid Image Views',
+      title: 'Images Grid Views',
       icon: ICON_URL,
       content: {
         type: 'iframe',
@@ -107,28 +107,9 @@ window.TrelloPowerUp.initialize({
   // 6. Power-Up Settings
   'show-settings': function (t, options) {
     return t.popup({
-      title: 'Grid Image Views Settings',
+      title: 'Images Grid Views Settings',
       url: './views/settings.html',
       height: 280
-    });
-  },
-
-  // 7. Authorization Status Check
-  'authorization-status': function (t, options) {
-    return t.get('member', 'private', 'token')
-      .then(function (token) {
-        return {
-          authorized: typeof token === 'string' && token.length > 0
-        };
-      });
-  },
-
-  // 8. Show Authorization Modal / Popup
-  'show-authorization': function (t, options) {
-    return t.popup({
-      title: 'Authorize Grid Image Views',
-      url: './views/auth.html',
-      height: 200
     });
   }
 });

@@ -1,6 +1,6 @@
-# 🖼️ Trello Grid Image Views Power-Up
+# 🖼️ Trello Images Grid Views Power-Up
 
-A modern, responsive, and feature-packed **Grid Image Views Power-Up** for Trello boards and cards.
+A modern, responsive, and feature-packed **Images Grid Views Power-Up** for Trello boards and cards.
 
 ---
 
@@ -49,17 +49,9 @@ Gallary Viewer/
   - Smooth Zoom-in / Zoom-out controls.
   - Automatic Slideshow mode.
   - Toggle between Single Lightbox and Multi-column Masonry Grid view.
-- **Custom Settings & OAuth**:
+- **Custom Settings & Preferences**:
   - Configurable default view mode, slideshow speed, and autoplay.
-  - Built-in Trello Token Authorization flow (`authorization-status` & `show-authorization`) for private board/card attachments.
-
----
-
-## 🔑 Trello API Key Configuration
-
-To enable the OAuth authorization flow:
-1. Obtain your Trello API Key from [trello.com/power-ups/admin](https://trello.com/power-ups/admin).
-2. Set `TRELLO_APP_KEY` in `public/js/auth.js` (or in `.env`).
+  - Zero-configuration: Works immediately using standard Trello client permissions without needing API keys or OAuth.
 
 ---
 
@@ -91,7 +83,7 @@ Copy the generated HTTPS URL (e.g. `https://xxxx-xx.ngrok-free.app`).
 1. Go to [Trello Power-Up Admin Portal](https://trello.com/power-ups/admin).
 2. Click **New Power-Up**.
 3. Fill in the details:
-   - **Name**: `Gallery Viewer`
+   - **Name**: `Images Grid Views`
    - **Iframe connector URL**: `https://<YOUR_HTTPS_TUNNEL_URL>/index.html`
    - **Icon**: `https://<YOUR_HTTPS_TUNNEL_URL>/assets/icon.svg`
 4. Under **Capabilities**, enable:
@@ -101,6 +93,5 @@ Copy the generated HTTPS URL (e.g. `https://xxxx-xx.ngrok-free.app`).
    - Card detail badges
    - Card back section
    - Show settings
-   - Authorization status & Show authorization
-5. Open your Trello Board, go to **Power-Ups** -> **Custom**, and enable **Gallery Viewer**.
+5. Open your Trello Board, go to **Power-Ups** -> **Custom**, and enable **Images Grid Views**.
 

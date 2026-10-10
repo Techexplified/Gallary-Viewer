@@ -1,7 +1,7 @@
 {
   "name": "trello-gallery-viewer-powerup",
   "version": "1.0.0",
-  "description": "A feature-rich Grid Image Views Power-Up for Trello boards and cards",
+  "description": "A feature-rich Images Grid Views Power-Up for Trello boards and cards",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
