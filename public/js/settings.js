@@ -18,7 +18,8 @@ t.render(function () {
     })
     .then(function () {
       return t.sizeTo('.settings-container');
-    });
+    })
+    .catch(function () {});
 });
 
 btnSave.addEventListener('click', function () {
@@ -31,5 +32,6 @@ btnSave.addEventListener('click', function () {
   return t.set('member', 'private', 'gallerySettings', newSettings)
     .then(function () {
       return t.closePopup();
-    });
+    })
+    .catch(function () {});
 });

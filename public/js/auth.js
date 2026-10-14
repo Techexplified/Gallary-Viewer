@@ -23,7 +23,8 @@ t.render(function () {
     })
     .then(function () {
       return t.sizeTo('.settings-container');
-    });
+    })
+    .catch(function () {});
 });
 
 btnAuthorize.addEventListener('click', function () {
@@ -53,5 +54,7 @@ btnDeauthorize.addEventListener('click', function () {
     .then(function () {
       authUnauthDiv.style.display = 'flex';
       authAuthDiv.style.display = 'none';
-    });
+      return t.sizeTo('.settings-container');
+    })
+    .catch(function () {});
 });

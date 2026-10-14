@@ -490,7 +490,7 @@
 
   $('lbOpen').addEventListener('click', function () {
     if (currentIndex >= 0 && visibleItems[currentIndex] && visibleItems[currentIndex].cardId) {
-      t.showCard(visibleItems[currentIndex].cardId);
+      t.showCard(visibleItems[currentIndex].cardId).catch(function () {});
     }
   });
 

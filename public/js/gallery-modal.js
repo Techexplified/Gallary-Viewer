@@ -34,7 +34,8 @@ t.render(function () {
       }
       images = window.GalleryAPI.getImageAttachmentsFromCard(card);
       initGallery();
-    });
+    })
+    .catch(function () {});
 });
 
 function initGallery() {
@@ -177,7 +178,7 @@ btnSlideshow.addEventListener('click', () => {
 });
 
 btnClose.addEventListener('click', () => {
-  t.closeModal();
+  t.closeModal().catch(() => {});
 });
 
 // Keyboard navigation
@@ -187,7 +188,7 @@ window.addEventListener('keydown', (e) => {
   } else if (e.key === 'ArrowRight') {
     showImage(currentIndex + 1);
   } else if (e.key === 'Escape') {
-    t.closeModal();
+    t.closeModal().catch(() => {});
   } else if (e.key === ' ') {
     e.preventDefault();
     if (slideshowInterval) stopSlideshow();

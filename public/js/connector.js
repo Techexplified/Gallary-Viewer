@@ -62,6 +62,9 @@ window.TrelloPowerUp.initialize({
             color: 'light-gray'
           }
         ];
+      })
+      .catch(function () {
+        return [];
       });
   },
 
@@ -88,20 +91,33 @@ window.TrelloPowerUp.initialize({
             }
           }
         ];
+      })
+      .catch(function () {
+        return [];
       });
   },
 
   // 5. Card Back Section (embedded thumbnail carousel/grid inside the card)
   'card-back-section': function (t, options) {
-    return {
-      title: 'Images Grid Views',
-      icon: ICON_URL,
-      content: {
-        type: 'iframe',
-        url: t.signUrl('./views/card-section.html'),
-        height: 140
-      }
-    };
+    return t.card('attachments')
+      .then(function (card) {
+        if (!card.attachments) return null;
+        const imageCount = card.attachments.filter(window.GalleryAPI.isImageAttachment).length;
+        if (imageCount === 0) return null;
+
+        return {
+          title: 'Images Grid Views',
+          icon: ICON_URL,
+          content: {
+            type: 'iframe',
+            url: t.signUrl('./views/card-section.html'),
+            height: 140
+          }
+        };
+      })
+      .catch(function () {
+        return null;
+      });
   },
 
   // 6. Power-Up Settings
